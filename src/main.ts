@@ -13,7 +13,7 @@ const MOD_NAME = "Amnesia";
 const AMNESIA_COLLECTIBLE_TYPE = Isaac.GetItemIdByName("Amnesia");
 
 const AMNESIA_CONFIG = {
-  BASE_CHANCE: 0.5,
+  BASE_CHANCE: 0.25,
   STACKABLE: false,
 };
 
