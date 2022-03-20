@@ -3,7 +3,7 @@ import {
   getPlayerCollectibleMap,
   getPlayers,
   getRandom,
-  getRandomInt,
+  getRandomArrayElement,
   isCollectiblePreviouslySeen,
   isQuestCollectible,
   upgradeMod,
@@ -59,7 +59,7 @@ function pickItem(player: EntityPlayer, oldSubType: int): int {
 
   for (const key of allHeldItemsMap.keys()) {
     const itemType = getCollectibleItemType(key);
-    if (itemType == ItemType.ITEM_ACTIVE || itemType == ItemType.ITEM_TRINKET) allHeldItemsMap.delete(key);
+    if (itemType === ItemType.ITEM_ACTIVE || itemType === ItemType.ITEM_TRINKET) allHeldItemsMap.delete(key);
   }
 
   if (!AMNESIA_CONFIG.STACKABLE) allHeldItemsMap.delete(AMNESIA_COLLECTIBLE_TYPE);
@@ -68,5 +68,5 @@ function pickItem(player: EntityPlayer, oldSubType: int): int {
 
   if (uniqueHeldArray.length <= 0) return oldSubType;
 
-  return uniqueHeldArray[getRandomInt(0, uniqueHeldArray.length - 1)];
+  return uniqueHeldArray[getRandomArrayElement(uniqueHeldArray)];
 }
