@@ -44,7 +44,7 @@ function checkCanMorph(player: EntityPlayer, entityPickup: EntityPickup): Boolea
     !modState.isMorphing &&
     player.HasCollectible(AMNESIA_COLLECTIBLE_TYPE) &&
     entityPickup.Variant == PickupVariant.PICKUP_COLLECTIBLE &&
-    isQuestCollectible(entityPickup.SubType) &&
+    !isQuestCollectible(entityPickup.SubType) &&
     !isCollectiblePreviouslySeen(entityPickup)
   );
 }
