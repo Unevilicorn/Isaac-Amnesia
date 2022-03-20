@@ -68,5 +68,5 @@ function pickItem(player: EntityPlayer, oldSubType: int): int {
 
   if (uniqueHeldArray.length <= 0) return oldSubType;
 
-  return uniqueHeldArray[getRandomArrayElement(uniqueHeldArray)];
+  return getRandomArrayElement(uniqueHeldArray);
 }
