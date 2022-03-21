@@ -16,7 +16,6 @@ const AMNESIA_COLLECTIBLE_TYPE = Isaac.GetItemIdByName("Amnesia");
 const AMNESIA_CONFIG = {
   BASE_CHANCE: 0.25,
   STACKABLE: false,
-  DO_LOG: true,
   IS_DEV: false,
 };
 
