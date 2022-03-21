@@ -1,4 +1,5 @@
 import {
+  addCollectible,
   getCollectibleItemType,
   getPlayerCollectibleMap,
   getPlayers,
@@ -13,8 +14,10 @@ const MOD_NAME = "Amnesia";
 const AMNESIA_COLLECTIBLE_TYPE = Isaac.GetItemIdByName("Amnesia");
 
 const AMNESIA_CONFIG = {
-  BASE_CHANCE: 1,
+  BASE_CHANCE: 0.25,
   STACKABLE: false,
+  DO_LOG: true,
+  IS_DEV: false,
 };
 
 const modState = {
@@ -25,16 +28,26 @@ export function main(): void {
   const modVanilla = RegisterMod(MOD_NAME, 1);
   const mod = upgradeMod(modVanilla);
 
-  mod.AddCallbackCustom(ModCallbacksCustom.MC_POST_COLLECTIBLE_INIT_FIRST, postPickupInitCollectible);
+  if (AMNESIA_CONFIG.IS_DEV)
+    mod.AddCallbackCustom(ModCallbacksCustom.MC_POST_GAME_STARTED_REORDERED, postGameStartedReordered);
+
+  mod.AddCallbackCustom(ModCallbacksCustom.MC_POST_COLLECTIBLE_INIT_FIRST, postCollectibleInitFirst);
 }
 
-function postPickupInitCollectible(entityPickup: EntityPickup) {
-  // printConsole(entityPickup.SubType.toString());
+function postGameStartedReordered() {
+  for (const player of getPlayers()) {
+    addCollectible(player, AMNESIA_COLLECTIBLE_TYPE);
+    addCollectible(player, CollectibleType.COLLECTIBLE_SAUSAGE);
+  }
+}
+
+function postCollectibleInitFirst(entityPickup: EntityPickup) {
   for (const player of getPlayers()) {
     if (checkCanMorph(player, entityPickup)) {
       modState.isMorphing = true;
-      const newMorphItemId = pickItem(player, entityPickup.SubType);
-      entityPickup.Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newMorphItemId, true);
+      const newMorphItemId = pickItem(player);
+      if (newMorphItemId !== CollectibleType.COLLECTIBLE_NULL)
+        entityPickup.Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newMorphItemId, true);
       modState.isMorphing = false;
     }
   }
@@ -46,13 +59,13 @@ function checkCanMorph(player: EntityPlayer, entityPickup: EntityPickup): Boolea
   );
 }
 
-function pickItem(player: EntityPlayer, oldSubType: int): int {
+function pickItem(player: EntityPlayer): int {
   const rngNum = getRandom();
   const allHeldItemsMap = getPlayerCollectibleMap(player);
   const amnesiaCount = AMNESIA_CONFIG.STACKABLE ? allHeldItemsMap.get(AMNESIA_COLLECTIBLE_TYPE)! : 1;
   const actualChance = 1 - (1 - AMNESIA_CONFIG.BASE_CHANCE) ** amnesiaCount;
 
-  if (rngNum > actualChance) return oldSubType;
+  if (rngNum > actualChance) return CollectibleType.COLLECTIBLE_NULL;
 
   for (const key of allHeldItemsMap.keys()) {
     const itemType = getCollectibleItemType(key);
@@ -63,7 +76,7 @@ function pickItem(player: EntityPlayer, oldSubType: int): int {
 
   const uniqueHeldArray = [...allHeldItemsMap.keys()];
 
-  if (uniqueHeldArray.length <= 0) return oldSubType;
+  if (uniqueHeldArray.length <= 0) return CollectibleType.COLLECTIBLE_NULL;
 
   return getRandomArrayElement(uniqueHeldArray);
 }
