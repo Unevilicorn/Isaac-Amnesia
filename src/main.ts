@@ -61,7 +61,7 @@ function checkCanMorph(player: EntityPlayer, entityPickup: EntityPickup): boolea
 function pickItem(player: EntityPlayer): int {
   const rngNum = getRandom();
   const allHeldItemsMap = getPlayerCollectibleMap(player);
-  const amnesiaCount = AMNESIA_CONFIG.STACKABLE ? allHeldItemsMap.get(AMNESIA_COLLECTIBLE_TYPE) || 1 : 1;
+  const amnesiaCount = AMNESIA_CONFIG.STACKABLE ? allHeldItemsMap.get(AMNESIA_COLLECTIBLE_TYPE) ?? 0 : 1;
   const actualChance = 1 - (1 - AMNESIA_CONFIG.BASE_CHANCE) ** amnesiaCount;
 
   if (rngNum > actualChance) return CollectibleType.COLLECTIBLE_NULL;
