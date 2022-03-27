@@ -1,10 +1,10 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-  <name>amnesia</name>
-  <directory>amnesia</directory>
-  <description>
-    Adds a new item called Amnesia, which have a chance to change a pedestal item to an item you already own.
-  </description>
-  <version>1.1</version>
-  <visibility />
+    <name>amnesia</name>
+    <directory>amnesia</directory>
+    <id>2782361997</id>
+    <description>Adds a new item called Amnesia, which have a chance to change a pedestal item to an item you already own.</description>
+    <version>1.2</version>
+    <visibility>Friends Only</visibility>
+    <tag id="Items"/>
 </metadata>
