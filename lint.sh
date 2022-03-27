@@ -21,8 +21,8 @@ npx eslint --max-warnings 0 src
 
 # Step 3 - Spell check every file using cspell
 # We use no-progress and no-summary because we want to only output errors
-npx cspell --no-progress --no-summary "src/**/*.ts"
-npx cspell --no-progress --no-summary "mod/metadata.xml"
+# npx cspell --no-progress --no-summary "src/**/*.ts"
+# npx cspell --no-progress --no-summary "mod/metadata.xml"
 
 # Step 4 - Use xmllint to lint XML files
 # (and skip this step if xmllint is not currently installed for whatever reason)
